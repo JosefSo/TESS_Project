@@ -9,3 +9,5 @@ The Transiting Exoplanet Survey Satellite (TESS) project is a project led by NAS
 Relevant links:
 
 https://mast.stsci.edu/tesscut/ https://docs.lightkurve.org/tutorials/1-getting-started/searching-for-data-products.html https://archive.stsci.edu/tess/bulk_downloads/bulk_downloads_ffi-tp-lc-dv.html https://www.researchgate.net/figure/Time-series-data-of-a-light-curve_fig2_324868315
+
+FITS File Header Definitions: https://cdn.diffractionlimited.com/help/maximdl/FITS_File_Header_Definitions.htm
