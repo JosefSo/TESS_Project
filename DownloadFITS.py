@@ -18,7 +18,7 @@ links = soup.find_all('a')
 # Download the .fits files
 for link in links:
     href = link.get('href')
-    if href.endswith('.fits') and ('ffir' in href or 'ffic' in href):
+    if href.endswith('.fits') and ('ffic' in href):
         # Complete the URL if it's a relative URL
         if not href.startswith('http'):
             href = url + href
