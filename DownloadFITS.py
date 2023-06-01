@@ -27,6 +27,6 @@ for link in links:
         r.raise_for_status()
 
         # Write the file
-        with open(os.path.join("FITS2020", href.split('/')[-1]), 'wb') as f:
+        with open(os.path.join("FFIs", href.split('/')[-1]), 'wb') as f:
             for chunk in r.iter_content(chunk_size=8192):
                 f.write(chunk)
