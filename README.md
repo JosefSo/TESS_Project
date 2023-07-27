@@ -1,4 +1,3 @@
-Here is an expanded README with more details about the project and background information:
 
 # Photometric Light Curve Analysis
 
