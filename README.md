@@ -80,7 +80,6 @@ The main steps are:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Let me know if you would like me to expand or modify this README further!
 
 
 
