@@ -13,13 +13,24 @@ This project performs aperture photometry on TESS Full Frame Images (FFIs) to ge
 
 ## Background
 
-The [TESS](https://www.nasa.gov/tess-transiting-exoplanet-survey-satellite) (Transiting Exoplanet Survey Satellite) is a NASA astrophysics mission launched in 2018 to survey the sky for exoplanets. 
+The TESS mission is searching for exoplanets using the transit method. TESS has 4 wide-field cameras that take images of 24x96 degree sections of sky continuously for 27 days each.
+These Full Frame Images (FFIs) cover the entire observation sector at a 30 minute cadence. They are stored in FITS format - 16 megapixel images with a pixel scale of 21 arcseconds/pixel.
+This project processes the FFIs to perform aperture photometry on all detectable stars. This generates flux measurements over time that can be analyzed to find variable stars, exoplanets, and study stellar behavior.
+The key steps are:
+Open FITS file, extract image data
+Estimate background noise (mean, median, standard deviation)
+Detect stars using DAOStarFinder in Photutils
+Perform aperture photometry around each star
+Calculate flux using total counts and exposure time
+Propagate uncertainties: photon noise, background noise, detector noise
+Add coordinates by converting pixel location to RA and Dec
+Output CSV file with fluxes, errors, times, coordinates
+The resulting high-precision light curves can be used to:
+Plot light curves and analyze stellar variability
+Search for transiting exoplanets through periodic dimming
+Generate power spectra to find stellar rotation periods
+Classify variable stars like RR Lyrae, eclipsing binaries, etc.
 
-TESS takes images of large sectors of the sky in 26 observation sectors, producing Full Frame Images (FFIs) with a 30 minute cadence. The FFIs are stored in FITS format.
-
-This project processes the TESS FFIs to perform aperture photometry on stars detected in the images. This generates flux measurements over time that can be used to plot light curves and analyze stellar variability.
-
-Photutils, Astropy, and other Python libraries are used to handle FITS files, calculate photometry, and analyze the resulting data.
 
 ## Usage
 
@@ -57,9 +68,11 @@ The main steps are:
 
 ## References
 
+- TESS Input Catalog: https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html
 - Photutils documentation: https://photutils.readthedocs.io/en/stable/
 - TESS mission: https://www.nasa.gov/tess-transiting-exoplanet-survey-satellite
-- TESS Input Catalog: https://mast.stsci.edu/portal/Mashup/Clients/Mast/Portal.html
+- Photometry Guide: https://photutils.readthedocs.io/en/stable/photometry.html
+
 
 ## License
 
