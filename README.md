@@ -16,20 +16,22 @@ This project performs aperture photometry on TESS Full Frame Images (FFIs) to ge
 The TESS mission is searching for exoplanets using the transit method. TESS has 4 wide-field cameras that take images of 24x96 degree sections of sky continuously for 27 days each.
 These Full Frame Images (FFIs) cover the entire observation sector at a 30 minute cadence. They are stored in FITS format - 16 megapixel images with a pixel scale of 21 arcseconds/pixel.
 This project processes the FFIs to perform aperture photometry on all detectable stars. This generates flux measurements over time that can be analyzed to find variable stars, exoplanets, and study stellar behavior.
+
 The key steps are:
-Open FITS file, extract image data
-Estimate background noise (mean, median, standard deviation)
-Detect stars using DAOStarFinder in Photutils
-Perform aperture photometry around each star
-Calculate flux using total counts and exposure time
-Propagate uncertainties: photon noise, background noise, detector noise
-Add coordinates by converting pixel location to RA and Dec
-Output CSV file with fluxes, errors, times, coordinates
+- Open FITS file, extract image data
+- Estimate background noise (mean, median, standard deviation)
+- Detect stars using DAOStarFinder in Photutils
+- Perform aperture photometry around each star
+- Calculate flux using total counts and exposure time
+- Propagate uncertainties: photon noise, background noise, detector noise
+- Add coordinates by converting pixel location to RA and Dec
+- Output CSV file with fluxes, errors, times, coordinates
+
 The resulting high-precision light curves can be used to:
-Plot light curves and analyze stellar variability
-Search for transiting exoplanets through periodic dimming
-Generate power spectra to find stellar rotation periods
-Classify variable stars like RR Lyrae, eclipsing binaries, etc.
+- Plot light curves and analyze stellar variability
+- Search for transiting exoplanets through periodic dimming
+- Generate power spectra to find stellar rotation periods
+- Classify variable stars like RR Lyrae, eclipsing binaries, etc.
 
 
 ## Usage
