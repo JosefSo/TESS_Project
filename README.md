@@ -1,15 +1,107 @@
 
-# Photometric Light Curve Analysis
+# TESS FFI Data Processing
 
-This project performs aperture photometry on TESS Full Frame Images (FFIs) to generate light curves and analyze variable stars.
+This repository contains a collection of Python scripts to download, calibrate, analyze, and generate lightcurves from TESS Full Frame Image (FFI) data.
 
 ## Overview
 
-- `ExtractFromFFIs.py` contains functions to process FITS files from the TESS mission, perform aperture photometry on identified sources, calculate fluxes and flux errors, and output CSV files with the results.
+The Transiting Exoplanet Survey Satellite (TESS) takes full frame images covering a 24x96 degree strip of sky with a cadence of 30 minutes. This FFI data is available on MAST archive.
 
-- `PlotLightCurve.py` demonstrates loading the CSV files, identifying the target star using coordinates, extracting the flux over time, and generating a light curve plot.
+This code provides a workflow to:
 
-- The `photometry_results` folder contains example CSV output files from `ExtractFromFFIs.py`.
+- Download FFI files for a given sector, date range, CCD, etc.
+- Calibrate the images by removing noise, hot pixels, cosmic rays. 
+- Detect stars and extract photometry using DAOStarFinder and aperture photometry
+- Convert pixel positions to RA/Dec celestial coordinates using WCS
+- Add star IDs by cross-matching with TIC catalog
+- Calculate lightcurves and times series flux for stars of interest
+
+The calibrated images and photometry results are saved to output folders for further analysis.
+
+## Usage
+
+The main entrypoint is main.py. Run this script and follow the prompt to:
+
+1. Enter parameters to download FFIs (sector, date, CCD) 
+2. Calibrate downloaded FFIs
+3. Detect stars and extract photometry
+4. Generate lightcurves for stars of interest
+
+Example usage:
+
+python main.py
+Select option (1-4): 1
+Enter sector, year, day, camera, CCD (comma-separated): 2, 2020, 2, 2, 1 
+### Downloads FFI files for given criteria
+
+Select option (1-4): 2
+### Calibrates downloaded files
+
+Select option (1-4): 3
+### Detects stars and performs photometry 
+
+Select option (1-4): 4
+### Creates lightcurves for stars of interest
+
+### Requirements
+
+- astropy
+- photutils
+- pandas
+- matplotlib
+- BeautifulSoup
+- requests
+- numpy
+
+### Input
+
+- FFI files from MAST archive
+- TESS Input Catalog (TIC) 
+
+### Output
+
+- calibrated_data/: Calibrated FFI arrays after removing noise (>3sigma clipped mean)
+- photometry_results/: CSV files containing photometry data for all detected stars per image
+- lightcurves/: Lightcurves for stars of interest
+
+## Methodology
+
+### FFI Download
+
+FFIDownloader.py takes user input for sector, date, CCD camera, etc. It constructs a query to the MAST FFI archive and uses BeautifulSoup to scrape and download all FFI files matching that criteria.
+
+### Calibration
+
+FFICalibrate.py loads each FFI file, extracts the image data array, and calculates sigma-clipped stats to find the mean, median, and standard deviation of background noise. This is used for calibration and noise removal. 
+
+The calibrated arrays are saved to calibrated_data/ for re-use.
+
+### Photometry
+
+FFIStarFinder.py loads the calibrated arrays and uses Photutils and DAOStarFinder to detect sources and perform aperture photometry. 
+
+Flux is calculated using the aperture sums and exposure time. Flux errors are estimated using Poisson noise of source+background, and read noise.  
+
+The photometry results are converted to RA/Dec using WCS package and cross-matched to the TIC catalog to get IDs.
+
+Results are saved in photometry_results/
+
+### Lightcurves
+
+FFILcCreator.py loads the photometry tables, identifies the star closest to user-provided RA/Dec, and generates a lightcurve timeseries by combining the flux across all observations.
+
+Lightcurves are saved to lightcurves/
+
+## Credits
+
+Photutils: https://photutils.readthedocs.io/en/stable/  
+WCSAxes: https://wcsaxes.readthedocs.io/en/latest/index.html
+
+
+
+
+
+
 
 ## Background
 
@@ -34,32 +126,7 @@ This project processes the FFIs to perform aperture photometry on all detectable
 - Classify variable stars like RR Lyrae, eclipsing binaries, etc.
 
 
-## Usage
 
-The main steps are:
-
-1. Modify `ExtractFromFFIs.py` to point to your folder of TESS FFI FITS files.
-
-2. Run `ExtractFromFFIs.py` to loop through the FITS files. For each file it will:
-   - Open the FITS and extract the image data
-   - Estimate background noise
-   - Detect stars using Photutils 
-   - Perform aperture photometry around each star
-   - Calculate flux and flux errors
-   - Convert pixel coordinates to RA and Dec 
-   - Output a CSV file with the photometry results
-
-3. Specify the RA and Dec coordinates of your target star in `PlotLightCurve.py`.
-
-4. Run `PlotLightCurve.py` to:
-   - Load the CSV files 
-   - Identify the target star 
-   - Extract flux measurements over time
-   - Plot the light curve
-
-5. Tweak parameters and analysis as desired - aperture size, binning light curve, periodogram, etc.
-
-## Requirements
 
 - Python 3 
 - Astropy
@@ -76,9 +143,6 @@ The main steps are:
 - Photometry Guide: https://photutils.readthedocs.io/en/stable/photometry.html
 
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 
 
